@@ -10,6 +10,7 @@ var note = require('./app/routes/note.routes');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/note', note);
+app.use('/user', user);
 database.mongoose;
 
 app.listen(port, () => {
