@@ -57,3 +57,62 @@ exports.createUniqueRecord = function(req, res){
         }
     })
 }
+
+exports.findOne = (req, res) =>{
+    Note.findById(req.params.id)
+    .then(data => {
+        if(data){
+            res.send(data);
+        }
+        else{
+            res.status(400).send({
+                message:'note not found'
+            })
+            .catch(err =>{
+                res.send(err);
+            })
+        }
+    })
+}
+
+exports.updateNote = function(req,res){
+    if(!req.body.name){
+        return res.status(400).send({
+            message: 'note content not be empty'
+        })
+    }
+    Note.findByIdAndUpdate(req.params.id,{
+        name: req.body.name,
+        city: req.body.city
+    }, {new: true})
+    .then(data =>{
+        if(data){
+            res.send(data);
+        }
+        else{
+            return res.status(400).send({
+                message:'note not found'
+            })
+        }
+    }).catch(err =>{
+        res.send(err);
+    } ) 
+}
+
+exports.delete_note = (req, res)=>{
+    Note.findByIdAndRemove(req.params.id)
+        .then(status =>{
+            if(status){
+                res.send({
+                    message:'Record deleted successfully'
+                })
+            }
+            else{
+                res.send({
+                    message:'Record Not Found'
+                })
+            }
+        }).catch(err =>{
+            res.send(err);
+        })
+}
